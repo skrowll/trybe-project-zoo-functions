@@ -14,17 +14,12 @@ function getRelatedEmployees(managerId) {
   if (isManager(managerId) === false) {
     throw new Error('O id inserido não é de uma pessoa colaboradora gerente!');
   }
-  // const employeesManaged = [];
-  // employees.filter((employees.managers).forEach((compare) => {
-  //   if (compare === managerId) {
-  //     employeesManaged.push('xablau');
-  //   }
-  // }));
-  // return employeesManaged;
-  const x = employees[0].managers;
-  return x;
+
+  const employeesManaged = [];
+  employees.filter(({ managers }) => managers.includes(managerId)).filter(
+    ({ firstName, lastName }) => employeesManaged.push(`${firstName} ${lastName}`),
+  );
+  return employeesManaged;
 }
 
-console.log(isManager('9e7d4524-363c-416a-8759-8aa7e50c0992'));
-console.log(getRelatedEmployees('9e7d4524-363c-416a-8759-8aa7e50c0992'));
 module.exports = { isManager, getRelatedEmployees };
