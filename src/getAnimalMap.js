@@ -5,11 +5,11 @@ function speciesPerLocation(animalsPerLocation) {
 }
 
 function getNamesPerLocation(animalsPerLocation) {
-  console.log(animalsPerLocation);
+  return console.log(animalsPerLocation);
 }
 
 function getAnimalMap(options) {
-  // seu código aqui
+//   // seu código aqui
   const result = data.species.reduce((acc, { location }) => {
     const animalsPerLocation = data.species.filter((item) => item.location === location);
     if (!options || !options.includeNames) {
@@ -26,6 +26,6 @@ function getAnimalMap(options) {
   return result;
 }
 
-// getAnimalMap();
-getAnimalMap({ includeNames: true });
+// // getAnimalMap();
+// getAnimalMap({ includeNames: true });
 module.exports = getAnimalMap;
