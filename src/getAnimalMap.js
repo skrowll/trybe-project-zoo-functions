@@ -1,48 +1,31 @@
 const data = require('../data/zoo_data');
 
-function getLocations() {
-  const mapLocations = data.species.map((item) => item.location);
-  const allLocation = mapLocations.filter((item, index) => mapLocations.indexOf(item) === index);
-  return allLocation;
+function speciesPerLocation(animalsPerLocation) {
+  return animalsPerLocation.map((item) => item.name);
 }
 
-function getAnimalsPerLocation(allLocation) {
-  const allAnimalsPerLocation = {};
-  allLocation.forEach((location) => {
-    const filterAnimalPerLocation = data.species.filter((animal) => animal.location === location);
-    allAnimalsPerLocation[`${location}`] = filterAnimalPerLocation.map((item) => item.name);
-  });
-  return allAnimalsPerLocation;
+function getNamesPerLocation(animalsPerLocation) {
+  console.log(animalsPerLocation);
 }
 
-function getAnimalNames(allLocation) {
-  const allAnimalsPerLocation = {};
-  allLocation.forEach((location) => {
-    const filterAnimalPerLocation = data.species.filter((animal) => animal.location === location);
-    allAnimalsPerLocation[`${location}`] = filterAnimalPerLocation.map((item) => item.name);
-  });
-}
-
-// eslint-disable-next-line complexity
 function getAnimalMap(options) {
-      // seu código aqui
-      if (!options) {
-        const allLocation = getLocations();
-        return getAnimalsPerLocation(allLocation);
-      }
-      if (!options.includeNames && options.sex) {
-        const allLocation = getLocations();
-        return getAnimalsPerLocation(allLocation);
-      }
-      if (!options.includeNames && options.sex && options.sorted) {
-        const allLocation = getLocations();
-        return getAnimalsPerLocation(allLocation);
-      }
-      if (options.includeNames) {
-        const allLocation = getLocations();
-        return getAnimalNames(allLocation);
-      }
+  // seu código aqui
+  const result = data.species.reduce((acc, { location }) => {
+    const animalsPerLocation = data.species.filter((item) => item.location === location);
+    if (!options || !options.includeNames) {
+      acc[location] = speciesPerLocation(animalsPerLocation);
+      return acc;
     }
+    if (options.includeNames) {
+      acc[location] = getNamesPerLocation(animalsPerLocation);
+      return acc;
+    }
+    return acc;
+  }, {});
+  console.log(result);
+  return result;
+}
 
 // getAnimalMap();
+getAnimalMap({ includeNames: true });
 module.exports = getAnimalMap;
