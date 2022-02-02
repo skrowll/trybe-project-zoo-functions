@@ -9,12 +9,27 @@ function speciesPerLocation() {
   return result;
 }
 
-function getNamesPerLocation() {
+function sortingByName(unsorted, sort) {
+  if (sort) {
+    return unsorted.sort();
+  }
+  return unsorted;
+}
+
+function sortingBySex(item, sex, sort) {
+  if (sex) {
+    const unsorted = item.residents.filter((item2) => item2.sex === sex)
+      .map((item3) => item3.name);
+    return ({ [`${item.name}`]: sortingByName(unsorted, sort) });
+  }
+  const unsorted = item.residents.map((item2) => item2.name);
+  return ({ [`${item.name}`]: sortingByName(unsorted, sort) });
+}
+
+function getNamesPerLocation(sex, sort) {
   const result = data.species.reduce((acc, { location }) => {
     const animalsPerLocation = data.species.filter((item) => item.location === location);
-    acc[location] = animalsPerLocation.map((item) => {
-      return ({ [`${item.name}`]: item.residents.map((item2) => item2.name) });
-    });
+    acc[location] = animalsPerLocation.map((item) => sortingBySex(item, sex, sort));
     return acc;
   }, {});
   return result;
@@ -22,16 +37,12 @@ function getNamesPerLocation() {
 
 function getAnimalMap(options) {
   // seu código aqui
-  if (!options || !options.includeNames) {
+  if (!options || (!options.includeNames)) {
     console.log(speciesPerLocation());
     return speciesPerLocation();
   }
-  if (options.includeNames) {
-    console.log(getNamesPerLocation());
-    return getNamesPerLocation();
-  }
+  console.log(getNamesPerLocation(options.sex, options.sorted));
+  return getNamesPerLocation(options.sex, options.sorted);
 }
 
-// getAnimalMap();
-getAnimalMap({ includeNames: true });
 module.exports = getAnimalMap;
